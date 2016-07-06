@@ -10,7 +10,7 @@ Feature: Signup as an student member
     And I enter my address details
     And I enter my university details
     Then I should not be asked for financial information
-    And I should not be asked for organization details
+    And I should not be asked for organisation details
     And I agree to the terms
     When I click sign up
     Then I am redirected to the payment page

@@ -11,7 +11,7 @@ end
 
 Then(/^I should not have an organisation assigned to me$/) do
   member = Member.where(email: @email).first
-  expect(member.organization).to be_nil
+  expect(member.organisation).to be_nil
 end
 
 Then(/^I should not see the "(.*?)" field$/) do |field|

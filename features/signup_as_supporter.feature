@@ -1,6 +1,6 @@
 Feature: Signup as a supporter member
   As a potential member
-  When I fill in my details and those of my organization
+  When I fill in my details and those of my organisation
   I want my payment to be processed by chargify and sent in the background to capsule
 
   Background:
@@ -30,7 +30,7 @@ Feature: Signup as a supporter member
     Given product information has been setup for "supporter_annual"
     And product information has been setup for "supporter_monthly"
     When I enter my name and contact details
-    And I enter my non-profit organization details
+    And I enter my non-profit organisation details
     And I enter my address details
     And I agree to the terms
     When I click sign up
@@ -80,9 +80,9 @@ Feature: Signup as a supporter member
       | address_region        | Town or city      |
       | address_country       | Country           |
       | postal_code           | Postcode          |
-      | organization_size     | Organisation size |
-      | organization_type     | Organisation type |
-      | organization_sector   | Industry sector   |
+      | organisation_size     | Organisation size |
+      | organisation_type     | Organisation type |
+      | organisation_sector   | Industry sector   |
 
   Scenario: Member tries to sign up, but doesn't agree to the terms
     When I enter my name and contact details
@@ -101,10 +101,10 @@ Feature: Signup as a supporter member
     When I click sign up
     Then I should get an error telling my passwords don't match
 
-  Scenario: Member tries to sign up, but enters an organization name that already exists
+  Scenario: Member tries to sign up, but enters an organisation name that already exists
     When I enter my name and contact details
     And I enter my company details
-    But there is already an organization with the name I want to use
+    But there is already an organisation with the name I want to use
     And I enter my address details
     And I agree to the terms
     When I click sign up

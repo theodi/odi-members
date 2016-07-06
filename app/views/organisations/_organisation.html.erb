@@ -1,0 +1,141 @@
+<div class='organisation' vocab="http://schema.org/" typeOf="Organisation">
+
+  <div class="organisation-sidebar pull-right">
+    <% unless @member.supporter? || organisation.logo.blank? %>
+      <div class='organisation-logo'
+           style='background-image: url(<%= organisation.logo.rectangular.url %>)'
+           data-bind='style: {backgroundImage: imageSrc}' >
+      </div>
+    <% end %>
+
+    <p>
+      <span class="label <%= organisation.member.product_name %>"><%= organisation.member.product_name.capitalize %></span>
+    </p>
+
+    <% if organisation.url.present? %>
+      <p>
+        <span class='contact-detail'>
+          <i class='icon icon-home'></i> <a property="url" data-bind="text: url, attr: {href: url}" href='<%= organisation.url %>'><%= organisation.url%></a>
+        </span>
+      </p>
+    <% end %>
+
+    <p property='contactPoint' typeOf="ContactPoint">
+
+      <span property='description' class='contact-point-description'>Sales contact</span>
+
+      <% if @preview || organisation.cached_contact_name.present? %>
+        <span data-bind="visible: contactName().length > 0" class='contact-detail'>
+          <i class='icon-user'></i> <span property="name" data-bind="text: contactName"><%= organisation.cached_contact_name %></span>
+        </span>
+      <% end %>
+
+      <% if @preview || organisation.cached_contact_email.present? %>
+        <span data-bind="visible: contactEmail().length > 0" class='contact-detail'>
+          <i class='icon-envelope-alt'></i> <a property="email" data-bind="text: contactEmail, attr: {href: mailto}" href='mailto:<%= organisation.cached_contact_email %>'><%= organisation.cached_contact_email %></a>
+        </span>
+      <% end %>
+
+      <% if @preview || organisation.cached_contact_phone.present? %>
+        <span data-bind="visible: contactPhone().length > 0" class='contact-detail'>
+          <i class='icon-phone-sign'></i> <span property="telephone" data-bind="text: contactPhone"><%= organisation.cached_contact_phone %></span>
+        </span>
+      <% end %>
+    </p>
+
+    <p>
+      <% if @preview || organisation.cached_twitter.present? %>
+        <span data-bind="visible: twitter().length > 0" property='contactPoint' typeof='ContactPoint'>
+          <a property='url' data-bind="attr: {href: twitterUrl}" href='http://twitter.com/<%= organisation.cached_twitter %>'><%= image_tag 'twitter-16x16.png', :alt => "Twitter" %><span property='name' class='contact-point-description'>Twitter</span></a>
+        </span>
+      <% end %>
+
+      <% if @preview || organisation.cached_facebook.present? %>
+        <span data-bind="visible: facebook().length > 0" property='contactPoint' typeof='ContactPoint'>
+          <a property='url' data-bind="attr: {href: facebook}" href='<%= organisation.cached_facebook %>'><%= image_tag 'facebook-16x16.png', :alt => "Facebook" %><span property='name' class='contact-point-description'>Facebook</span></a>
+        </span>
+      <% end %>
+
+      <% if @preview || organisation.cached_linkedin.present? %>
+        <span data-bind="visible: linkedin().length > 0" property='contactPoint' typeof='ContactPoint'>
+          <a property='url' data-bind="attr: {href: linkedin}" href='<%= organisation.cached_linkedin %>'><%= image_tag 'linkedin-16x16.png', :alt => "Linkedin" %><span property='name' class='contact-point-description'>Linkedin</span></a>
+        </span>
+      <% end %>
+    </p>
+  </div>
+
+  <h2 property="name"<% if @preview %> data-bind="html: name"<% end %>><%= organisation.name %></h2>
+
+  <div class='<%= @member.supporter? ? '' : 'organisation-content' %>'>
+
+    <% if @preview || organisation.cached_tagline.present? %>
+      <p data-bind="visible: tagline().length > 0"><strong data-bind="text: tagline"><%= organisation.cached_tagline %></strong></p>
+    <% end %>
+
+    <div class='organisation-description' property="description" datatype="rdf:HTML">
+      <% if @preview %>
+        <div data-bind="html: formattedDescription"></div>
+      <% else %>
+        <%= simple_format(organisation.description) %>
+      <% end %>
+    </div>
+
+    <p>
+      <em>Member since: <%= @member.created_at.strftime("%B %Y")%></em>
+    </p>
+
+  </div>
+
+  <% if @preview %>
+    <script type="text/javascript">
+        function OrganisationViewModel() {
+            this.name         = ko.observable("<%= organisation.name %>");
+            this.description  = ko.observable("<%= escape_javascript(strip_tags(organisation.description).html_safe) rescue nil %>");
+            this.url          = ko.observable("<%= organisation.url %>");
+            this.imageSrc     = ko.observable("url(<%= organisation.logo.rectangular.url %>)");
+            this.contactName  = ko.observable("<%= organisation.cached_contact_name %>");
+            this.contactPhone = ko.observable("<%= organisation.cached_contact_phone %>");
+            this.contactEmail = ko.observable("<%= organisation.cached_contact_email %>");
+            this.twitter      = ko.observable("<%= organisation.cached_twitter %>");
+            this.facebook     = ko.observable("<%= organisation.cached_facebook %>");
+            this.linkedin     = ko.observable("<%= organisation.cached_linkedin %>");
+            this.tagline      = ko.observable("<%= escape_javascript(strip_tags(organisation.cached_tagline).html_safe) rescue nil %>");
+            this.mailto       = ko.computed(function() {
+              return 'mailto:' + this.contactEmail();
+            }, this);
+            this.twitterUrl   = ko.computed(function() {
+              return 'http://twitter.com/' + this.twitter();
+            }, this);
+            this.facebookLabel= ko.computed(function() {
+              return this.facebook().split('/').pop();
+            }, this);
+            this.linkedinLabel= ko.computed(function() {
+              return this.linkedin().split('/').pop();
+            }, this);
+            this.formattedDescription = ko.computed(function() {
+              str = this.description().replace(/\r\n?/, "\n");
+              str = $.trim(str);
+              if (str.length > 0) {
+                str = str.replace(/\n\n+/g, '</p><p>');
+                str = str.replace(/\n/g, '<br />');
+                str = '<p>' + str + '</p>';
+              }
+              return str;
+            }, this);
+            this.updateImage = function() {
+              input = $('#member_organisation_attributes_logo')[0]
+              if (input.files[0] && window.FileReader) {
+                reader = new FileReader();
+                reader.onloadend = function( ){
+                    window.organisationPreview.imageSrc("url("+this.result+")");
+                }
+                reader.readAsDataURL(input.files[0]);
+              }
+            };
+        };
+        window.organisationPreview = new OrganisationViewModel()
+        ko.applyBindings(window.organisationPreview);
+    </script>
+  <% end %>
+
+</div>

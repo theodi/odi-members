@@ -1,4 +1,4 @@
-class Organization < ActiveRecord::Base
+class Organisation < ActiveRecord::Base
   belongs_to :member
 
   mount_uploader :logo, ImageObjectUploader
@@ -14,8 +14,6 @@ class Organization < ActiveRecord::Base
   validates :name, :presence => true, :on => :update
   validates :name, :uniqueness => true, :allow_nil => true
   validates :description, :presence => true, :on => :update
-  validates :description, :length => { :maximum  => 500, :too_long => "Your description cannot be longer than %{count} characters"}, :if => :supporter?
-  validates :description, :length => { :maximum  => 1000, :too_long => "Your description cannot be longer than %{count} characters"}, :unless => :supporter?
 
   # We use both a URL-parsing validator, and a simple regexp here
   # so that we exclude things like http://localhost, which are valid
@@ -36,15 +34,15 @@ class Organization < ActiveRecord::Base
 #      when 'supporter' then 4
 #      else 5
 #    end,
-#    organizations.name
+#    organisations.name
 #  ORDER
 
   def self.in_alpha_group(alpha)
     if alpha.upcase.between?('A', 'Z')
-      where("substr(organizations.name, 1, 1) = ?", alpha)
+      where("substr(organisations.name, 1, 1) = ?", alpha)
     else
       letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-      where("instr('#{letters}', substr(organizations.name, 1, 1)) = 0")
+      where("instr('#{letters}', substr(organisations.name, 1, 1)) = 0")
     end
   end
 
@@ -55,10 +53,6 @@ class Organization < ActiveRecord::Base
   def self.alpha_group(name)
     letter = name.upcase.first
     letter.between?('A', 'Z') ? letter : '#'
-  end
-
-  def supporter?
-    member.supporter?
   end
 
   def membership_description

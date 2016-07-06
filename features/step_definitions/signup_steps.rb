@@ -22,12 +22,12 @@ Given /^the student coupon code SUPERFREE is in Chargify$/ do
   Member.register_chargify_coupon_code(@coupon)
 end
 
-Given /^there is already an organization with the name I want to use$/ do
-  FactoryGirl.create :member, :organization_name => 'FooBar Inc'
+Given /^there is already an organisation with the name I want to use$/ do
+  FactoryGirl.create :member, :organisation_name => 'FooBar Inc'
 end
 
-Given /^there is already an organization with the name '(.*?)'$/ do |org_name|
-  FactoryGirl.create :member, :organization_name => org_name
+Given /^there is already an organisation with the name '(.*?)'$/ do |org_name|
+  FactoryGirl.create :member, :organisation_name => org_name
 end
 
 Given(/^a sponsor account already exists$/) do
@@ -35,7 +35,7 @@ Given(/^a sponsor account already exists$/) do
   @email = Faker::Internet.email
   @member = FactoryGirl.build(:member,
     :product_name          => "supporter",
-    :organization_name     => Faker::Company.name,
+    :organisation_name     => Faker::Company.name,
     :password              => @password,
     :password_confirmation => @password,
     :email                 => @email
@@ -48,7 +48,7 @@ end
 Given(/^I have a (sponsor|partner) account$/) do |level|
   @password = 'password'
   @email = Faker::Internet.email
-  @member = FactoryGirl.build :member, :product_name => level, :organization_name => Faker::Company.name,
+  @member = FactoryGirl.build :member, :product_name => level, :organisation_name => Faker::Company.name,
                          :password => @password, :password_confirmation => @password, :email => @email
   @member.remote!
   @member.save!
@@ -122,45 +122,45 @@ When /^I enter my address details$/ do
 end
 
 When /^I enter my company details$/ do
-  @organization_name = 'FooBar Inc'
-  @organization_size = '251-1000'
-  @organization_type = 'commercial'
-  @organization_sector = 'Energy'
-  @organization_vat_id = '213244343'
-  @organization_company_number = '012345678'
+  @organisation_name = 'FooBar Inc'
+  @organisation_size = '251-1000'
+  @organisation_type = 'commercial'
+  @organisation_sector = 'Energy'
+  @organisation_vat_id = '213244343'
+  @organisation_company_number = '012345678'
 
-  fill_in('member_organization_name', :with => @organization_name)
-  select(find_by_id('member_organization_size').
-          find("option[value='#{@organization_size}']").text,
-          from: 'member_organization_size')
-  select(find_by_id('member_organization_type').
-          find("option[value='#{@organization_type}']").text,
-          from: 'member_organization_type')
-  fill_in('member_organization_company_number',
-          with: @organization_company_number)
-  select(@organization_sector, from: 'member_organization_sector')
-  fill_in('member_organization_vat_id', :with => @organization_vat_id)
+  fill_in('member_organisation_name', :with => @organisation_name)
+  select(find_by_id('member_organisation_size').
+          find("option[value='#{@organisation_size}']").text,
+          from: 'member_organisation_size')
+  select(find_by_id('member_organisation_type').
+          find("option[value='#{@organisation_type}']").text,
+          from: 'member_organisation_type')
+  fill_in('member_organisation_company_number',
+          with: @organisation_company_number)
+  select(@organisation_sector, from: 'member_organisation_sector')
+  fill_in('member_organisation_vat_id', :with => @organisation_vat_id)
 end
 
-When /^I enter my non-profit organization details$/ do
-  @organization_name = 'FooBar Inc'
-  @organization_size = '10-50'
-  @organization_type = 'non_commercial'
-  @organization_sector = 'Media'
-  @organization_vat_id = '413444343'
-  @organization_company_number = '087654321'
+When /^I enter my non-profit organisation details$/ do
+  @organisation_name = 'FooBar Inc'
+  @organisation_size = '10-50'
+  @organisation_type = 'non_commercial'
+  @organisation_sector = 'Media'
+  @organisation_vat_id = '413444343'
+  @organisation_company_number = '087654321'
 
-  fill_in('member_organization_name', :with => @organization_name)
-  select(find_by_id('member_organization_size').
-          find("option[value='#{@organization_size}']").text,
-          from: 'member_organization_size')
-  select(find_by_id('member_organization_type').
-          find("option[value='#{@organization_type}']").text,
-          from: 'member_organization_type')
-  fill_in('member_organization_company_number',
-          with: @organization_company_number)
-  select(@organization_sector, from: 'member_organization_sector')
-  fill_in('member_organization_vat_id', :with => @organization_vat_id)
+  fill_in('member_organisation_name', :with => @organisation_name)
+  select(find_by_id('member_organisation_size').
+          find("option[value='#{@organisation_size}']").text,
+          from: 'member_organisation_size')
+  select(find_by_id('member_organisation_type').
+          find("option[value='#{@organisation_type}']").text,
+          from: 'member_organisation_type')
+  fill_in('member_organisation_company_number',
+          with: @organisation_company_number)
+  select(@organisation_sector, from: 'member_organisation_sector')
+  fill_in('member_organisation_vat_id', :with => @organisation_vat_id)
 end
 
 When /^I agree to the terms$/ do
@@ -244,7 +244,7 @@ When(/^chargify verifies the payment$/) do
   }
 end
 
-Then /^my organization should be made active in Capsule$/ do
+Then /^my organisation should be made active in Capsule$/ do
   expect(Resque).to receive(:enqueue) do |*args|
     expect(args[0]).to eql SendDirectoryEntryToCapsule
     expect(args[3][:active]).to eq(true)
@@ -252,13 +252,13 @@ Then /^my organization should be made active in Capsule$/ do
 end
 
 Then /^(their|my) details should be queued for further processing$/ do |ignore|
-  organization = {
-    'name' => @organization_name,
-    'vat_id' => @organization_vat_id,
-    'company_number' => @organization_company_number,
-    'size' => @organization_size,
-    'type' => @organization_type,
-    'sector' => @organization_sector,
+  organisation = {
+    'name' => @organisation_name,
+    'vat_id' => @organisation_vat_id,
+    'company_number' => @organisation_company_number,
+    'size' => @organisation_size,
+    'type' => @organisation_type,
+    'sector' => @organisation_sector,
     'origin' => @origin,
     'newsletter' => true,
     'share_with_third_parties' => @share_with_third_parties
@@ -303,7 +303,7 @@ Then /^(their|my) details should be queued for further processing$/ do |ignore|
 
   expect(Resque).to receive(:enqueue) do |*args|
     expect(args[0]).to eql SignupProcessor
-    expect(args[1]).to eql organization
+    expect(args[1]).to eql organisation
     expect(args[2]).to eql contact_person
     expect(args[3]).to eql billing
     expect(args[4]['payment_method']).to eql @payment_method
@@ -432,7 +432,7 @@ Then(/^the hidden field should have the value "(.*?)"$/) do |value|
 end
 
 Then(/^(I|they) should be marked as active$/) do |ignore|
-  expect(@member.cached_active).to eq(true) if @member.organization?
+  expect(@member.cached_active).to eq(true) if @member.organisation?
   expect(@member.current).to eq(true)
 end
 

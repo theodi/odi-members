@@ -2,7 +2,7 @@ Given /^that I have a membership number and password$/ do
   # Create a new member
   member = Member.new(
     :product_name => 'supporter',
-    :organization_name => 'FooBar Inc',
+    :organisation_name => 'FooBar Inc',
     :contact_name => 'Ian McIain',
     :email => 'iain@foobar.com',
     :telephone => '0121 123 446',
@@ -11,11 +11,11 @@ Given /^that I have a membership number and password$/ do
     :address_region => 'Fakeshire',
     :address_country => 'United Kingdom',
     :postal_code => 'FAKE 123',
-    :organization_name => "Test Org",
-    :organization_size => "251-1000",
-    :organization_type => "commercial",
-    :organization_sector => "Energy",
-    :organization_vat_id => '213244343',
+    :organisation_name => "Test Org",
+    :organisation_size => "251-1000",
+    :organisation_type => "commercial",
+    :organisation_sector => "Energy",
+    :organisation_vat_id => '213244343',
     :password => 'p4ssw0rd',
     :password_confirmation => 'p4ssw0rd',
     :agreed_to_terms => '1')
@@ -67,7 +67,7 @@ Then /^I should have recieve an error$/ do
 end
 
 Given(/^my size and sector are not set$/) do
-  @membership.organization_size = nil
-  @membership.organization_sector = nil
+  @membership.organisation_size = nil
+  @membership.organisation_sector = nil
   @membership.save(validate: false)
 end

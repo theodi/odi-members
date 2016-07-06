@@ -3,7 +3,7 @@ Feature: Sync from capsule
   As a member of the commercial team
   I want changes made in CapsuleCRM to propogate to the public directory
 
-  Scenario: Create new organization memberships
+  Scenario: Create new organisation memberships
     Given I am not currently a member
     Then nothing should be placed on the signup queue
     But my membership number should be stored in CapsuleCRM
@@ -28,7 +28,7 @@ Feature: Sync from capsule
     When I follow "your member account" in the email
     Then I should see "Set your password"
 
-  Scenario: Update existing organization memberships
+  Scenario: Update existing organisation memberships
     Given I am already signed up
     Then nothing should be placed on the queue
     When my information is changed in CapsuleCRM

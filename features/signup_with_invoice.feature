@@ -15,7 +15,7 @@ Feature: Signup and pay by invoice
     And I enter my company details
     And I enter my address details
     And I agree to the terms
-    Then my organization should be made active in Capsule
+    Then my organisation should be made active in Capsule
     Then my details should be queued for further processing
     When I click sign up
     Then I am returned to the thanks page
@@ -44,7 +44,7 @@ Feature: Signup and pay by invoice
     And I click sign up
     Then I should see an error relating to Full name
     And I enter my name and contact details
-    Then my organization should be made active in Capsule
+    Then my organisation should be made active in Capsule
     Then my details should be queued for further processing
     When I click sign up
     And I am returned to the thanks page

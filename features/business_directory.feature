@@ -1,13 +1,13 @@
 @timecop
-Feature: Adding details to the organization directory
+Feature: Adding details to the organisation directory
 
-	As a member, I want my details to be listed on the organization directory and stored in capsule
+	As a member, I want my details to be listed on the organisation directory and stored in capsule
 
-	Scenario: Sucessful organization directory upload
+	Scenario: Sucessful organisation directory upload
 
 		Given that I have signed up
-		Then I am redirected to submit my organization details
-		And I enter my organization details
+		Then I am redirected to submit my organisation details
+		And I enter my organisation details
     Then my organisation details should be queued for further processing
     When I click submit
     And I should see a notice that my details were saved successfully
@@ -16,7 +16,7 @@ Feature: Adding details to the organization directory
   Scenario: Successful image upload
 		Given I have a sponsor account
 		And I visit my account page
-		And I enter my organization details
+		And I enter my organisation details
     And I attach an image
     Then my organisation details should be queued for further processing
     When I click submit
@@ -29,9 +29,9 @@ Feature: Adding details to the organization directory
 	Scenario Outline: User tries to submit their details, but misses a mandatory field
 
 		Given that I have signed up
-		Then I am redirected to submit my organization details
-		And I enter my organization details
-		But I leave my organization <field> blank
+		Then I am redirected to submit my organisation details
+		And I enter my organisation details
+		But I leave my organisation <field> blank
     Then my organisation details should not be queued for further processing
 		When I click submit
 		And I should see an error relating to <text>
@@ -45,8 +45,8 @@ Feature: Adding details to the organization directory
   Scenario Outline: User submits bad URLs
 
 		Given that I have signed up
-		Then I am redirected to submit my organization details
-		And I enter my organization details
+		Then I am redirected to submit my organisation details
+		And I enter my organisation details
 		But I enter the URL <url>
 		And I click submit
 		Then I should <outcome>
@@ -62,13 +62,13 @@ Feature: Adding details to the organization directory
       | javascript:alert('no') | see an error relating to Homepage |
 
 
-  Scenario: User submits a duplicate organization name
+  Scenario: User submits a duplicate organisation name
 
 		Given that I have signed up as a supporter
-		Then I am redirected to submit my organization details
-		And I enter my organization details
-		But I enter the organization name 'ACME Explosives Ltd'
-    But there is already an organization with the name 'ACME Explosives Ltd'
+		Then I am redirected to submit my organisation details
+		And I enter my organisation details
+		But I enter the organisation name 'ACME Explosives Ltd'
+    But there is already an organisation with the name 'ACME Explosives Ltd'
     Then my organisation details should not be queued for further processing
 		When I click submit
 		And I should see an error relating to Organisation name
@@ -76,7 +76,7 @@ Feature: Adding details to the organization directory
 	Scenario: Supporter cannot upload images
 
 		Given that I have signed up as a supporter
-		Then I am redirected to submit my organization details
+		Then I am redirected to submit my organisation details
 		And I cannot see a logo upload
 		And the description field is limited to 500 characters
 
@@ -90,8 +90,8 @@ Feature: Adding details to the organization directory
 	Scenario: Supporter tries to enter more than 500 characters
 
 		Given that I have signed up as a supporter
-		Then I am redirected to submit my organization details
-		And I enter my organization details
+		Then I am redirected to submit my organisation details
+		And I enter my organisation details
 		And my description is 525 characters long
     Then my organisation details should not be queued for further processing
 		When I click submit
@@ -101,7 +101,7 @@ Feature: Adding details to the organization directory
 
 		Given I have a sponsor account
 		And I visit my account page
-		And I enter my organization details
+		And I enter my organisation details
 		And my description is 1035 characters long
     Then my organisation details should not be queued for further processing
     When I click submit
@@ -111,7 +111,7 @@ Feature: Adding details to the organization directory
 
 		Given I have a partner account
 		And I am a founding partner
-		And I have entered my organization details
+		And I have entered my organisation details
 		And my listing is active
 		When I visit the members list
 		Then I should be listed as a founding partner
@@ -121,7 +121,7 @@ Feature: Adding details to the organization directory
 		Given there are 5 active partners in the directory
 		And I have a partner account
 		And I am a founding partner
-		And I have entered my organization details
+		And I have entered my organisation details
 		And my listing is active
 		When I visit the members list
 		Then my listing should appear first in the list

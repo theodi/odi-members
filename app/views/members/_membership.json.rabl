@@ -11,7 +11,7 @@ end
 node :member do |org|
   # Basics
   member = {
-    :type         => "http://schema.org/Organization",
+    :type         => "http://schema.org/Organisation",
     :name         => org.name,
     :description  => org.description,
     :url          => org.url

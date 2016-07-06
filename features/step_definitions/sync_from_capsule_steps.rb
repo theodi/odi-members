@@ -7,7 +7,7 @@ end
 
 Given /^I am already signed up$/ do
   @membership = FactoryGirl.create :current_active_member
-  @old_description = @membership.organization.description
+  @old_description = @membership.organisation.description
 end
 
 Given(/^I am already signed up as an individual member$/) do
@@ -35,7 +35,7 @@ When /^my information is changed in CapsuleCRM$/ do
   @active            = "true"
   @email             = Faker::Internet.email
   @newsletter        = true
-  @organization_name = Faker::Company.name
+  @organisation_name = Faker::Company.name
   @description       = Faker::Company.bs
   @url               = Faker::Internet.url
   @product_name      = 'sponsor'
@@ -47,8 +47,8 @@ When /^my information is changed in CapsuleCRM$/ do
   @linkedin          = Faker::Internet.url
   @facebook          = Faker::Internet.url
   @tagline           = Faker::Company.bs
-  @organization_size = '>1000'
-  @organization_sector = "Other"
+  @organisation_size = '>1000'
+  @organisation_sector = "Other"
 end
 
 When /^the sync task runs$/ do
@@ -57,12 +57,12 @@ When /^the sync task runs$/ do
     'product_name'  => @product_name,
     'id'            => @membership_number,
     'newsletter'    => @newsletter,
-    'size'          => @organization_size,
-    'sector'        => @organization_sector,
+    'size'          => @organisation_size,
+    'sector'        => @organisation_sector,
   }.compact
   directory_entry = {
     'active'        => @active,
-    'name'          => @organization_name,
+    'name'          => @organisation_name,
     'description'   => @description,
     'url'           => @url,
     'contact'       => @contact_name,
@@ -82,12 +82,12 @@ When(/^the sync task runs it should raise an error$/) do
     'product_name'  => @product_name,
     'id'            => @membership_number,
     'newsletter'    => @newsletter,
-    'size'          => @organization_size,
-    'sector'        => @organization_sector,
+    'size'          => @organisation_size,
+    'sector'        => @organisation_sector,
   }.compact
   directory_entry = {
     'active'        => @active,
-    'name'          => @organization_name,
+    'name'          => @organisation_name,
     'description'   => @description,
     'url'           => @url,
     'contact'       => @contact_name,
@@ -107,7 +107,7 @@ Then /^a membership should be created for me$/ do
   expect(@membership).to be_present
   @membership_number = @membership.membership_number
   expect(@membership_number).to be_present
-  @old_description = @membership.organization.description
+  @old_description = @membership.organisation.description
 end
 
 Then(/^an individual membership should be created for me$/) do
@@ -128,18 +128,18 @@ Then /^my details should be cached correctly$/ do
   expect(@membership.cached_active).to                     eq (@active == "true")
   expect(@membership.product_name).to                      eq @product_name
   expect(@membership.cached_newsletter).to                 eq @newsletter
-  expect(@membership.organization_size).to                 eq @organization_size
-  expect(@membership.organization_sector).to               eq @organization_sector
-  expect(@membership.organization.name).to                 eq @organization_name
-  expect(@membership.organization.description).to          eq @old_description # description should not change when synced
-  expect(@membership.organization.url).to                  eq @url
-  expect(@membership.organization.cached_contact_name).to  eq @contact_name
-  expect(@membership.organization.cached_contact_phone).to eq @contact_phone
-  expect(@membership.organization.cached_contact_email).to eq @contact_email
-  expect(@membership.organization.cached_twitter).to       eq @twitter
-  expect(@membership.organization.cached_linkedin).to      eq @linkedin
-  expect(@membership.organization.cached_facebook).to      eq @facebook
-  expect(@membership.organization.cached_tagline).to       eq @tagline
+  expect(@membership.organisation_size).to                 eq @organisation_size
+  expect(@membership.organisation_sector).to               eq @organisation_sector
+  expect(@membership.organisation.name).to                 eq @organisation_name
+  expect(@membership.organisation.description).to          eq @old_description # description should not change when synced
+  expect(@membership.organisation.url).to                  eq @url
+  expect(@membership.organisation.cached_contact_name).to  eq @contact_name
+  expect(@membership.organisation.cached_contact_phone).to eq @contact_phone
+  expect(@membership.organisation.cached_contact_email).to eq @contact_email
+  expect(@membership.organisation.cached_twitter).to       eq @twitter
+  expect(@membership.organisation.cached_linkedin).to      eq @linkedin
+  expect(@membership.organisation.cached_facebook).to      eq @facebook
+  expect(@membership.organisation.cached_tagline).to       eq @tagline
 end
 
 Then(/^my individual details should be cached correctly$/) do
@@ -163,7 +163,7 @@ Then /^my membership number should be stored in CapsuleCRM$/ do
       expect(args[1]).to eql nil
       expect(args[2]).to eql @email
     else
-      expect(args[1]).to eql @organization_name
+      expect(args[1]).to eql @organisation_name
       expect(args[2]).to eql nil
     end
     expect(args[3]).to eql Member.where(email: @email).first.membership_number

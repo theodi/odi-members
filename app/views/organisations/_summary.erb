@@ -1,0 +1,28 @@
+<div class='organisation organisation-summary' vocab="http://schema.org/" typeOf="Organisation">
+
+  <% if organisation.logo.rectangular.url.present? %>
+    <div class='organisation-logo pull-right' style='background-image: url(<%= organisation.logo.rectangular.url %>)'>
+    </div>
+  <% end %>
+
+  <div class='organisation-content'>
+    <h2 property="name"><%= link_to organisation.name, organisation.member %>  <span class="label <%= organisation.member.product_name %>"><%= organisation.membership_description %></span></h2>
+
+    <% if organisation.cached_tagline.present? %>
+      <p><strong><%= organisation.cached_tagline %></strong></p>
+    <% end %>
+
+    <% if organisation.url.present? %>
+      <p class="url">
+        <i class='icon icon-home'></i>
+        <%= link_to organisation.url, organisation.url, :property => "url"%></a>
+      <p>
+    <% end %>
+
+    <div class='organisation-description clearfix'>
+      <p property="description"><%= highlight(organisation_description(organisation), @search) %></p>
+      <%= link_to "#{editable?(organisation.member) ? "Edit" : "More"} information".html_safe, organisation.member, :class=>'btn pull-right', :title => "#{editable?(organisation.member) ? "Edit" : "More"} information on #{organisation.name}" %>
+    </div>
+  </div>
+
+</div>
