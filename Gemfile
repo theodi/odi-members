@@ -51,7 +51,6 @@ gem 'pg'
 gem 'bootstrap-sass'
 
 gem 'eventmachine', '= 1.0.9'
-gem 'json', '= 2.0.1'
 
 group :development, :test do
   gem 'cucumber-rails', require: false
