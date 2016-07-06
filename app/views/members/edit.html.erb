@@ -1,0 +1,175 @@
+<%= form_for(@member, :html => { :method => :put, :class => 'form-horizontal' }) do |f| %>
+  <%= error_messages(@member) %>
+
+  <fieldset>
+    <legend>Account Details</legend>
+
+    <div class="control-group">
+      <%= f.label :membership_number, :class => 'control-label' %>
+      <div class="controls">
+        <span class="input-large uneditable-input"><%= @member.membership_number %></span>
+        <span class="help-inline">(your login name)</span>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <%= f.label :email, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.email_field :email %>
+      </div>
+    </div>
+
+    <% if @member.individual? %>
+      <div class="control-group">
+        <%= f.label :contact_name, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_field :contact_name %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :telephone, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.telephone_field :telephone %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :address, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.text_area :address, :rows => 5 %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @member.organization? %>
+    <div class="control-group">
+      <%= f.label :organization_size, :class => 'control-label' %>
+      <div class="controls">
+        <%= f.select(:organization_size, {
+            "less than 10 employees"   => '<10',
+            "10 - 50 employees"        => '10-50',
+            "51 - 250 employees"       => '51-250',
+            "251 - 1000 employees"     => '251-1000',
+            "more than 1000 employees" => '>1000'
+          }) %>
+      </div>
+    </div>
+    <% end %>
+
+    <div class="control-group">
+      <%= f.label :organization_sector, :class => 'control-label'  %>
+      <div class="controls">
+        <%= f.select(:organization_sector, Member.sectors) %>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="controls">
+        <label class='checkbox'>
+          <%= f.check_box :cached_newsletter %> <%= t(:receive_newsletter) %>
+        </label>
+      </div>
+    </div>
+
+    <div class="control-group">
+      <div class="controls">
+        <label class='checkbox'>
+          <%= f.check_box :cached_share_with_third_parties %> <%= t(:share_with_third_parties) %>
+        </label>
+      </div>
+    </div>
+
+  </fieldset>
+
+  <fieldset>
+    <legend>Badge</legend>
+
+    <p>
+      Tell the world about your ODI membership.
+      <a id="badge-embed" href="#badgeContent" data-toggle="modal">Display a badge</a> on your site or
+      <a id="badge-download" href="#badgeDownload" data-toggle="modal">download an image of your badge</a>.
+    </p>
+
+    <%= render(:partial => 'badge_form') %>
+    <%= render(:partial => 'badge_download') %>
+  </fieldset>
+
+  <% if @member.organization? %>
+  <fieldset id='organization-details'>
+
+    <legend>Organisation Details</legend>
+
+    <p class='alert alert-info'>
+      The ODI membership directory is a space that allows open data companies to
+      network, find each other, and work together. This section allows you to specify
+      the details that are shown in the directory.
+    </p>
+
+    <%= f.fields_for :organization do |builder| %>
+      <%= render :partial => 'organizations/form', :locals => { :f => builder } %>
+    <% end %>
+
+    <div class="control-group">
+      <div class="controls">
+        <section class='preview'>
+          <%= render :partial => 'organizations/organization', :locals => { :organization => @member.organization } %>
+        </section>
+      </div>
+    </div>
+
+  </fieldset>
+  <% end %>
+
+  <% unless current_admin %>
+
+    <fieldset>
+
+      <legend>Change Password</legend>
+
+      <div class="control-group">
+        <%= f.label :password, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.password_field :password %>
+        </div>
+      </div>
+
+      <div class="control-group">
+        <%= f.label :password_confirmation, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.password_field :password_confirmation %>
+        </div>
+      </div>
+
+    </fieldset>
+
+    <fieldset>
+
+      <legend>Current Password</legend>
+
+      <p>
+        We need your current password to confirm your changes.
+      </p>
+
+      <div class="control-group">
+        <%= f.label :current_password, :class => 'control-label' %>
+        <div class="controls">
+          <%= f.password_field :current_password, :required => 'required' %>
+          <span class="help-inline">*</span>
+        </div>
+      </div>
+
+    </fieldset>
+  <% end %>
+
+  <% unless @member.individual? || @member.cached_active %>
+    <p class='alert alert-info'>
+      After you save, the ODI will review your listing and enable it for display in the public directory.
+    </p>
+  <% end %>
+
+  <div class="form-actions">
+    <%= f.submit "Save", :id => 'save', :class => 'btn btn-primary btn-large' %>
+  </div>
+<% end %>
+
