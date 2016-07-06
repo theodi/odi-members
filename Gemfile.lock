@@ -281,6 +281,8 @@ GEM
       pkg-config (~> 1.1.7)
     pg (0.18.4)
     pkg-config (1.1.7)
+    protected_attributes (1.1.3)
+      activemodel (>= 4.0.1, < 5.0)
     pusher-client (0.6.2)
       json
       websocket (~> 1.0)
@@ -383,6 +385,9 @@ GEM
       thread_safe (~> 0.1)
     uglifier (3.0.0)
       execjs (>= 0.3.0, < 3)
+    validate_url (1.0.2)
+      activemodel (>= 3.0.0)
+      addressable
     websocket (1.2.3)
     xml-simple (1.1.5)
     xpath (2.0.0)
@@ -410,6 +415,7 @@ DEPENDENCIES
   launchy
   mini_magick
   pg
+  protected_attributes
   rabl
   rails (= 4.1.15)
   rb-fsevent (~> 0.9)
@@ -424,6 +430,7 @@ DEPENDENCIES
   travis
   turbolinks
   uglifier (>= 1.3.0)
+  validate_url
   zeroclipboard-rails
 
 BUNDLED WITH

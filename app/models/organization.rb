@@ -27,17 +27,17 @@ class Organization < ActiveRecord::Base
 
   # Sorry, ActiveRecord can't quite make this query
   # should work in both MySQL and sqlite
-  scope :display_order, joins(:member).order(<<-ORDER)
-    members.membership_number = '#{connection.quote_string(Member.founding_partner_id)}' desc,
-    case members.product_name
-      when 'partner' then 1
-      when 'sponsor' then 2
-      when 'member' then 3
-      when 'supporter' then 4
-      else 5
-    end,
-    organizations.name
-  ORDER
+#  scope :display_order, joins(:member).order(<<-ORDER)
+#    members.membership_number = '#{connection.quote_string(Member.founding_partner_id)}' desc,
+#    case members.product_name
+#      when 'partner' then 1
+#      when 'sponsor' then 2
+#      when 'member' then 3
+#      when 'supporter' then 4
+#      else 5
+#    end,
+#    organizations.name
+#  ORDER
 
   def self.in_alpha_group(alpha)
     if alpha.upcase.between?('A', 'Z')
@@ -66,7 +66,7 @@ class Organization < ActiveRecord::Base
   end
 
   def character_limit
-    supporter? ? 500 : 1000 
+    supporter? ? 500 : 1000
   end
 
   def strip_twitter_prefix
@@ -83,4 +83,3 @@ class Organization < ActiveRecord::Base
     cached_twitter ? "http://twitter.com/#{cached_twitter}" : nil
   end
 end
-
